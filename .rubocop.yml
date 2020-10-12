@@ -1,0 +1,29 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'tmp/**/*'
+    - '.git/**/*'
+    - 'bin/*'
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  TargetRubyVersion: 2.4
+
+Metrics:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - lib/wx_customs.rb
+    - wx_customs.gemspec
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Layout/ExtraSpacing:
+  AllowForAlignment: true
+
+Layout/LineLength:
+  Enabled: false
