@@ -33,7 +33,7 @@ module AlipayCustoms
     # @see https://global.alipay.com/docs/ac/global/acquire_customs
     # @params params [Hash]
     # @return [HTTParty::Response]
-    def acquire_customs(params)
+    def acquire_customs!(params)
       body = {
         service: "alipay.acquire.customs",
         partner: partner,
@@ -42,7 +42,9 @@ module AlipayCustoms
         merchant_customs_name: merchant_customs_name
       }.merge(common_params, params)
 
-      invoke_remote(@base_uri, body.merge({ sign: AlipayCustoms::Sign.generate(body, key) }))
+      resp = invoke_remote(@base_uri, body.merge({ sign: AlipayCustoms::Sign.generate(body, key) }))
+      raise AlipayCustoms::Error.new(resp["alipay"]["error"]) if resp["alipay"]["is_success"] == "F"
+      resp
     end
 
     # Query the custom declaration status
@@ -50,13 +52,15 @@ module AlipayCustoms
     # @see https://global.alipay.com/docs/ac/global/customs_query
     # @params params [Hash]
     # @return [HTTParty::Response]
-    def customs_query(params)
+    def customs_query!(params)
       body = {
         service: "alipay.overseas.acquire.customs.query",
         partner: partner
       }.merge(common_params, params)
 
-      invoke_remote(@base_uri, body.merge({ sign: AlipayCustoms::Sign.generate(body, key) }))
+      resp = invoke_remote(@base_uri, body.merge({ sign: AlipayCustoms::Sign.generate(body, key) }))
+      raise AlipayCustoms::Error.new(resp["alipay"]["error"]) if resp["alipay"]["is_success"] == "F"
+      resp
     end
 
     private
